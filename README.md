@@ -28,7 +28,7 @@ PiModemBuilder turns your Raspberry Pi into a Hayes-compatible modem emulator th
 
 1. Flash a fresh Raspberry Pi OS Lite image to your SD card
 2. Configure WiFi and enable SSH
-3. Download and run the script:
+3. Download and run the `pimodem.sh` script:
 ```bash
 wget https://github.com/Cloudschatze/PiModemBuilder/raw/refs/heads/main/pimodem.sh
 chmod +x pimodem.sh
