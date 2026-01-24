@@ -1,2 +1,148 @@
-# PiModem
+# PiModemBuilder
+
 A shell build script to configure a Raspberry Pi as a serially-connected modem emulator with Telnet and PPP functionality.
+
+## What It Does
+
+PiModem turns your Raspberry Pi into a Hayes-compatible modem emulator that connects vintage computers to modern networks. Using a USB-to-serial adapter, your retro machine can dial into BBSes, establish PPP connections, and access the internet just like it's 1995.
+
+## Hardware Requirements
+
+- **Raspberry Pi Zero 2 W** (tested) or similar model
+- **USB-to-serial adapter** (connects to vintage computer's serial port)
+- **Power supply** for the Raspberry Pi
+- **WiFi connection** (for internet access)
+
+## What Gets Installed
+
+- **tcpser** - Hayes modem emulator that translates AT commands to TCP connections
+- **pppd** - PPP daemon for dial-up internet connections
+- **xinetd** - Service manager for the PPP login service
+- **NAT/IP forwarding** - Routes traffic from PPP clients through WiFi
+
+## Installation
+
+1. Flash a fresh Raspberry Pi OS Lite image to your SD card
+2. Configure WiFi and enable SSH
+3. Copy `pimodem.sh` to your Raspberry Pi
+4. Run the script:
+```bash
+chmod +x pimodem.sh
+./pimodem.sh
+```
+
+The script will automatically install and configure everything needed.
+
+## Default Configuration
+
+- **Serial device**: `/dev/ttyUSB0` (USB-to-serial adapter)
+- **Baud rate**: 9600 (good for most retro systems)
+- **PPP IP range**: 192.192.1.1/192.192.1.2 (outside typical LAN ranges)
+
+### Pre-configured "Phone Numbers"
+
+The script creates a phonebook at `/home/pi/phonebook.txt` with these defaults:
+
+- `5551000` - bbs.fozztexx.com
+- `5551001` - particlesbbs.dyndns.org:6400
+- `5559000` - localhost:2323 (PPP connection)
+
+## Usage
+
+### From Your Vintage Computer
+
+Connect via terminal software at 9600 baud (or your configured rate):
+
+```
+AT                    (test modem)
+ATZ                   (reset modem)
+ATDT5551000          (dial BBS)
+ATDT5559000          (dial PPP - use any username/password)
+```
+
+### Changing Baud Rate
+
+The script installs a helper utility:
+
+```bash
+pimodem-baud              # Show current setting
+pimodem-baud 2400         # Change to 2400 baud
+pimodem-baud 19200        # Change to 19200 baud
+```
+
+Common rates: 300, 1200, 2400, 9600, 19200, 38400
+
+### Adding Phone Numbers
+
+Edit `/home/pi/phonebook.txt`:
+
+```
+5551234=example.com:23
+5555678=bbs.example.org
+```
+
+Then restart the service:
+```bash
+sudo systemctl restart tcpser
+```
+
+### Checking Status
+
+```bash
+sudo systemctl status tcpser
+sudo systemctl status xinetd
+```
+
+## Customization
+
+### Change Serial Device
+
+Edit `/usr/local/bin/start_tcpser.sh` and modify:
+```bash
+dev='/dev/ttyUSB0'    # Change to your device
+```
+
+### PPP IP Addresses
+
+Edit `/etc/ppp/options` to change:
+```
+192.192.1.1:192.192.1.2
+```
+
+### Enable PPP Debug Logging
+
+Uncomment the `debug` line in `/etc/ppp/options` to troubleshoot connection issues.
+
+## Troubleshooting
+
+**Modem not responding:**
+- Check that your USB-to-serial adapter appears as `/dev/ttyUSB0` (run `ls /dev/ttyUSB*`)
+- Verify baud rate matches your terminal software
+- Check service status: `sudo systemctl status tcpser`
+
+**Can't connect to PPP:**
+- Verify xinetd is running: `sudo systemctl status xinetd`
+- Check system logs: `sudo journalctl -u xinetd -f`
+
+**No internet after PPP connection:**
+- Verify NAT is configured: `sudo iptables -t nat -L`
+- Check IP forwarding: `cat /proc/sys/net/ipv4/ip_forward` (should show 1)
+
+## Technical Details
+
+- Uses [tcpser](https://github.com/FozzTexx/tcpser) by FozzTexx for modem emulation
+- PPP authentication accepts any username/password (configured for retro compatibility)
+- NAT shares the WiFi connection with PPP clients
+- Services start automatically on boot
+
+## License
+
+This script is provided as-is for hobbyist and educational use.
+
+## Credits
+
+This build script automates the setup process described in the excellent 
+[PiModem tutorial by podsix.org](http://podsix.org/articles/pimodem/).
+
+- tcpser by FozzTexx
+- Original PiModem concept and documentation by podsix.org
