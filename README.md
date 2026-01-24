@@ -63,6 +63,8 @@ ATDTexample.com              (dial any Telnet host directly)
 ATDTexample.com:2323         (dial any Telnet host with custom port)
 ```
 
+**Note:** The `5559000` number connects to the PPP service and requires a PPP/dial-up networking client (like Windows Dial-Up Networking, MacPPP, or trumpet winsock). It won't work from a regular terminal emulator - use your operating system's PPP dialer instead.
+
 **You can dial in three ways:**
 1. **Phonebook entries** - Use the configured numbers (e.g., `ATDT5551000`)
 2. **Direct hostnames** - Type any Telnet-accessible hostname (e.g., `ATDTlord.stabs.org`)
