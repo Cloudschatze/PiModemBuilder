@@ -140,7 +140,7 @@ Uncomment the `debug` line in `/etc/ppp/options` to troubleshoot connection issu
 
 ## Technical Details
 
-- Uses [tcpser](https://github.com/FozzTexx/tcpser) by FozzTexx for modem emulation
+- Uses FozzTexx' fork of [tcpser](https://github.com/FozzTexx/tcpser) for modem emulation
 - PPP authentication accepts any username/password (configured for retro compatibility)
 - NAT shares the WiFi connection with PPP clients
 - Services start automatically on boot
@@ -154,5 +154,5 @@ This script is provided as-is for hobbyist and educational use.
 This build script automates the setup process described in the excellent 
 [PiModem tutorial by podsix.org](http://podsix.org/articles/pimodem/).
 
-- tcpser by FozzTexx
+- tcpser by Jim Brain & FozzTexx
 - Inspired by the retro computing and BBS communities
