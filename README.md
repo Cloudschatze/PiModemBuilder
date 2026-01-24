@@ -127,6 +127,24 @@ Edit `/etc/ppp/options` to change:
 
 Uncomment the `debug` line in `/etc/ppp/options` to troubleshoot connection issues.
 
+### Configure Read-Only Filesystem (Recommended)
+
+For headless operation and protection against SD card corruption from unexpected power loss, you can configure the Pi to run in read-only mode using overlayfs.
+
+**Enable read-only mode:**
+
+Raspberry Pi OS includes a built-in overlay filesystem option. Enable it with:
+```bash
+sudo raspi-config
+```
+
+Navigate to: **Performance Options** → **Overlay File System** → Enable overlay and set boot partition to read-only when prompted.
+
+**Important notes:**
+- Run the build script and complete all customization **before** enabling overlay mode
+- The phonebook file (`/home/pi/phonebook.txt`) won't be editable in read-only mode
+- To make changes later, temporarily disable overlay mode, make changes, then re-enable
+
 ## Troubleshooting
 
 **Modem not responding:**
