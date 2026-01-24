@@ -154,7 +154,7 @@ This script is provided as-is for hobbyist and educational use.
 
 ## Credits
 
-This build script automates the setup process described in the excellent 
+This build script automates (with several modifications) the setup process described in the excellent 
 [PiModem tutorial by podsix.org](http://podsix.org/articles/pimodem/).
 
 - tcpser by Jim Brain & FozzTexx
