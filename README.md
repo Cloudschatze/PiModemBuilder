@@ -4,7 +4,7 @@ A shell build script to configure a Raspberry Pi as a serially-connected modem e
 
 ## What It Does
 
-PiModem turns your Raspberry Pi into a Hayes-compatible modem emulator that connects vintage computers to modern networks. Using a USB-to-serial adapter, your retro machine can dial into BBSes, establish PPP connections, and access the internet just like it's 1995.
+PiModemBuilder turns your Raspberry Pi into a Hayes-compatible modem emulator that connects vintage computers to modern networks. Using a USB-to-serial adapter, your retro machine can dial into BBSes, establish PPP connections, and access the internet just like it's 1995.
 
 ## Hardware Requirements
 
@@ -54,11 +54,18 @@ The script creates a phonebook at `/home/pi/phonebook.txt` with these defaults:
 Connect via terminal software at 9600 baud (or your configured rate):
 
 ```
-AT                    (test modem)
-ATZ                   (reset modem)
-ATDT5551000          (dial BBS)
-ATDT5559000          (dial PPP - use any username/password)
+AT                           (test modem)
+ATZ                          (reset modem)
+ATDT5551000                  (dial predefined phonebook entry - e.g., 5551000)
+ATDT5559000                  (dial predefined PPP phonebook entry - use any username/password)
+ATDTexample.com              (dial any Telnet host directly)
+ATDTexample.com:2323         (dial any Telnet host with custom port)
 ```
+
+**You can dial in three ways:**
+1. **Phonebook entries** - Use the configured numbers (e.g., `ATDT5551000`)
+2. **Direct hostnames** - Type any Telnet-accessible hostname (e.g., `ATDTlord.stabs.org`)
+3. **Hostname with port** - Specify a custom port (e.g., `ATDTexample.com:2323`)
 
 ### Changing Baud Rate
 
@@ -145,4 +152,4 @@ This build script automates the setup process described in the excellent
 [PiModem tutorial by podsix.org](http://podsix.org/articles/pimodem/).
 
 - tcpser by FozzTexx
-- Original PiModem concept and documentation by podsix.org
+- Inspired by the retro computing and BBS communities
