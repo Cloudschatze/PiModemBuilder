@@ -23,6 +23,7 @@ PiModemBuilder turns your Raspberry Pi into a Hayes-compatible modem emulator th
 - **pppd** - PPP daemon for dial-up internet connections
 - **xinetd** - Service manager for the PPP login service
 - **NAT/IP forwarding** - Routes traffic from PPP clients through WiFi
+- **Telnet** - For local and outbound Telnet connections
 
 ## Installation
 
