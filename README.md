@@ -61,8 +61,8 @@ Connect via terminal software at 9600 baud (or your configured rate):
 ```
 AT                           (test modem)
 ATZ                          (reset modem)
-ATDT#######                  (dial defined phonebook entry - e.g., ATDT5551000)
-ATDT5559000                  (dial defined PPP phonebook entry - use any username/password)
+ATDT#######                  (dial phonebook entry - e.g., 5551000, 5551001)
+ATDT5559000                  (dial PPP phonebook entry - use any username/password)
 ATDTexample.com              (dial any Telnet host directly)
 ATDTexample.com:2323         (dial any Telnet host with custom port)
 ```
