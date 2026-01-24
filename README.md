@@ -173,5 +173,5 @@ This script is provided as-is for hobbyist and educational use.
 
 ## Credits
 
-- [The PiModem Project](http://podsix.org/articles/pimodem/) by Matt Whittied
+- [The PiModem Project](http://podsix.org/articles/pimodem/) by Matt Whitted
 - tcpser by Jim Brain & FozzTexx
