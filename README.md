@@ -6,9 +6,12 @@ A shell build script to configure a Raspberry Pi as a serially-connected modem e
 
 PiModemBuilder turns your Raspberry Pi into a Hayes-compatible modem emulator that connects vintage computers to modern networks. Using a USB-to-serial adapter, your retro machine can dial into BBSes, establish PPP connections, and access the internet just like it's 1995.
 
+![20260124_133018](https://github.com/user-attachments/assets/3a3f01a6-12bc-4e70-adea-98a231b9716d)
+
+
 ## Hardware Requirements
 
-- **Raspberry Pi Zero 2 W** (tested) or similar model
+- **Raspberry Pi Zero W or Zero 2 W** (tested) or similar model
 - **USB-to-serial adapter** (connects to vintage computer's serial port)
 - **Null-modem adapter or cable** (required - connects DTE to DTE)
 - **Power supply** for the Raspberry Pi
