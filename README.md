@@ -161,7 +161,7 @@ Navigate to: **Performance Options** → **Overlay File System** → Enable over
 ## Technical Details
 
 - Uses FozzTexx' fork of [tcpser](https://github.com/FozzTexx/tcpser) for modem emulation
-- PPP authentication accepts any username/password (configured for retro compatibility)
+- PPP authentication accepts any username/password
 - NAT shares the WiFi connection with PPP clients
 - Services start automatically on boot
 
