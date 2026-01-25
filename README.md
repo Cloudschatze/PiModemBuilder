@@ -71,7 +71,7 @@ ATDTexample.com              (dial any Telnet-accessible host directly)
 ATDTexample.com:2323         (dial any Telnet-accessible host with custom port)
 ```
 
-**Note:** The `5559000` number connects to the PPP service and requires a PPP/dial-up networking client (like Windows Dial-Up Networking, MacPPP, or trumpet winsock).
+**Note:** The `5559000` number connects to the PPP service and requires a PPP/dial-up networking client (like Windows Dial-Up Networking, MacPPP, Trumpet Winsock, or the PPP client in GeoWorks/NewDeal Office/Breadbox Ensemble).
 
 ### Changing Baud Rate
 
