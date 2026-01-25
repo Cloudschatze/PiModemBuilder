@@ -54,7 +54,7 @@ The script creates a phonebook at `/home/pi/phonebook.txt` with these defaults:
 
 ### From Your Vintage Computer
 
-Connect via terminal software at 9600 baud (or your configured rate). For PPP/internet access, use your system's dial-up networking client instead.
+Connect via terminal software at 9600 baud (or your configured rate) and issue Hayes AT commands just as you would to an actual modem.. For PPP/internet access, use your system's dial-up networking client instead.
 
 **Dialing options:**
 1. **Phonebook entries** - Use the configured numbers (e.g., `ATDT5551000`)
