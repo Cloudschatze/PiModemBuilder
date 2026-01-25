@@ -127,7 +127,7 @@ Uncomment the `debug` line in `/etc/ppp/options` to troubleshoot connection issu
 
 ### Configure Read-Only Filesystem (Recommended)
 
-For headless operation and protection against SD card corruption from unexpected power loss, you can configure the Pi to run in read-only mode using overlayfs.
+For headless operation and protection against SD card corruption, you can configure the Pi to run in read-only mode using overlayfs.
 
 **Enable read-only mode:**
 
