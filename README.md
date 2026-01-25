@@ -12,8 +12,8 @@ PiModemBuilder turns your Raspberry Pi into a Hayes-compatible modem emulator th
 ## Hardware Requirements
 
 - **Raspberry Pi Zero W or Zero 2 W** (tested) or similar model
-- **USB-to-serial adapter** (connects to vintage computer's serial port)
-- **Null-modem adapter or cable** (required - connects DTE to DTE)
+- **USB-to-serial adapter** (connects the Raspberry Pi to a vintage computer's serial port)
+- **Null-modem adapter or cable** (required - permits DTE to DTE connectivity)
 - **Power supply** for the Raspberry Pi
 - **WiFi connection**
 
