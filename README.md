@@ -54,8 +54,14 @@ The script creates a phonebook at `/home/pi/phonebook.txt` with these defaults:
 
 ### From Your Vintage Computer
 
-Connect via terminal software at 9600 baud (or your configured rate):
+Connect via terminal software at 9600 baud (or your configured rate). For PPP/internet access, use your system's dial-up networking client instead.
 
+**Dialing options:**
+1. **Phonebook entries** - Use the configured numbers (e.g., `ATDT5551000`)
+2. **Direct hostnames** - Type any Telnet-accessible hostname (e.g., `ATDTlord.stabs.org`)
+3. **Hostname with port** - Specify a custom port (e.g., `ATDTexample.com:2323`)
+
+**AT Command Examples:**
 ```
 AT                           (test modem)
 ATZ                          (reset modem)
@@ -66,11 +72,6 @@ ATDTexample.com:2323         (dial any Telnet-accessible host with custom port)
 ```
 
 **Note:** The `5559000` number connects to the PPP service and requires a PPP/dial-up networking client (like Windows Dial-Up Networking, MacPPP, or trumpet winsock).
-
-**You can dial in three ways:**
-1. **Phonebook entries** - Use the configured numbers (e.g., `ATDT5551000`)
-2. **Direct hostnames** - Type any Telnet-accessible hostname (e.g., `ATDTlord.stabs.org`)
-3. **Hostname with port** - Specify a custom port (e.g., `ATDTexample.com:2323`)
 
 ### Changing Baud Rate
 
