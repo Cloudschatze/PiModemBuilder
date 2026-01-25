@@ -1,6 +1,6 @@
 # PiModemBuilder
 
-A shell build script to configure a Raspberry Pi as a serially-connected modem emulator with Telnet and PPP functionality. Automates (with modifications) the base [PiModem Project build by podsix.org](http://podsix.org/articles/pimodem/).
+A shell build script to configure a Raspberry Pi as a serially-connected modem emulator with Telnet and PPP functionality. Automates (with modifications) the [PiModem Project tutorial by podsix.org](http://podsix.org/articles/pimodem/).
 
 ## What It Does
 
