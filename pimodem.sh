@@ -5,7 +5,7 @@ echo "--------------------"
 
 echo -n "Installing prerequisites..."
 if sudo apt-get update --allow-releaseinfo-change > /dev/null 2>&1 \
-&& sudo apt-get install -y iptables ppp telnet xinetd telnetd-ssl > /dev/null 2>&1 \
+&& sudo apt-get install -y iptables ppp inetutils-telnet xinetd telnetd-ssl > /dev/null 2>&1 \
 && cd /tmp \
 && wget https://github.com/FozzTexx/tcpser/archive/refs/heads/master.zip > /dev/null 2>&1 \
 && unzip -o master.zip > /dev/null 2>&1 \
