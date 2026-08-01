@@ -26,8 +26,10 @@ EOF
 then
     if sudo iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE > /dev/null 2>&1 \
     && sudo apt-get install -y iptables-persistent > /dev/null 2>&1 \
-    && sudo bash -c 'sed -i "/^#*.*net.ipv4.ip_forward/c\net.ipv4.ip_forward = 1" /etc/sysctl.conf || echo "net.ipv4.ip_forward = 1" >> /etc/sysctl.conf' \
-    && sudo sysctl -p > /dev/null 2>&1; then
+    && sudo tee /etc/sysctl.d/99-pimodem-ip-forward.conf > /dev/null << 'EOF'
+net.ipv4.ip_forward = 1
+EOF
+    && sudo sysctl --system > /dev/null 2>&1; then
         echo "Done"
     else
         echo "Failed"
