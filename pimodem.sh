@@ -161,7 +161,7 @@ lcp-echo-failure 4
 
 # IP addresses to use in local:remote format.  We use NAT to share
 # the Wi-Fi connection, make sure these are outside of your real subnet.
-192.192.1.1:192.192.1.2
+192.168.192.1:192.168.192.2
 
 # Other sensible options
 asyncmap 0
