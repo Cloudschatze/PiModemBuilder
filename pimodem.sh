@@ -50,7 +50,7 @@ dev='/dev/ttyUSB0'
 for i in $(cat $phonebook); do
     n="$n -n$i "
 done
-/usr/local/bin/tcpser -s ${baud} -d ${dev} $n
+/usr/local/bin/tcpser -s ${baud} -d ${dev} $n -i '&C0&K3'
 EOF
 
 sudo tee /etc/systemd/system/tcpser.service > /dev/null << 'EOF'
