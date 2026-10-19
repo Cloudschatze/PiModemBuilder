@@ -4,14 +4,90 @@ clear
 echo "PiModem Builder v0.1"
 echo "--------------------"
 
+# Hosts that must always be treated as raw TCP (no telnet negotiation or
+# telnet auto-detection). Everything else keeps stock tcpser behavior.
+RAW_HOST="nwnrevival.com"
+
+# Write the tcpser patcher to a temp file. This is done here, outside the
+# && chain below, because a heredoc can't sit mid-chain.
+cat > /tmp/tcpser-rawhost-patch.py << 'EOF'
+import sys
+host = sys.argv[1]
+
+# modem_core.h: per-connection flag
+p = "src/modem_core.h"
+s = open(p).read()
+old = "  int first_char;\n  nvt_vars nvt_data;\n} line_config;"
+assert old in s, "modem_core.h layout changed"
+s = s.replace(old, "  int first_char;\n  int force_raw;   /* PiModem patch: skip telnet handling for listed hosts */\n  nvt_vars nvt_data;\n} line_config;")
+open(p, "w").write(s)
+
+# line.c: decide raw vs. telnet when the call is placed
+p = "src/line.c"
+s = open(p).read()
+assert '#include "line.h"\n' in s, "line.c layout changed"
+s = s.replace('#include "line.h"\n',
+'''#include "line.h"
+#include <ctype.h>
+#include <string.h>
+
+/* PiModem patch: destinations that must always be treated as raw TCP.
+ * Matched as a case-insensitive substring of the resolved address
+ * (after phonebook lookup). Add more entries before the NULL. */
+static const char *raw_hosts[] = { "%s", NULL };
+
+static int host_is_raw(const char *addy)
+{
+  char buf[256];
+  int i;
+
+  for (i = 0; addy[i] && i < 255; i++)
+    buf[i] = tolower((unsigned char) addy[i]);
+  buf[i] = 0;
+  for (i = 0; raw_hosts[i]; i++)
+    if (strstr(buf, raw_hosts[i]))
+      return TRUE;
+  return FALSE;
+}
+''' % host.lower(), 1)
+
+old = "  cfg->line_data.first_char = TRUE;\n  cfg->line_data.valid_conn = FALSE;\n  nvt_init_config"
+assert old in s, "line_init_config changed"
+s = s.replace(old, "  cfg->line_data.first_char = TRUE;\n  cfg->line_data.force_raw = FALSE;\n  cfg->line_data.valid_conn = FALSE;\n  nvt_init_config", 1)
+
+old = "  addy = pb_search(addy);\n  cfg->line_data.fd = ip_connect(addy);\n"
+assert old in s, "line_connect changed"
+s = s.replace(old, "  addy = pb_search(addy);\n  cfg->line_data.force_raw = host_is_raw(addy);\n  if (cfg->line_data.force_raw)\n    LOG(LOG_INFO, \"Raw TCP host, telnet handling disabled\");\n  cfg->line_data.fd = ip_connect(addy);\n", 1)
+
+old = "    send_nvt_command(cfg->line_data.fd, &cfg->line_data.nvt_data, NVT_WILL, NVT_OPT_ECHO);\n"
+assert old in s, "ECHO negotiation changed"
+s = s.replace(old, "    if (!cfg->line_data.force_raw)\n  " + old, 1)
+
+old = "    if (!cfg->parity) {\n      send_nvt_command"
+assert old in s, "binary negotiation changed"
+s = s.replace(old, "    if (!cfg->parity && !cfg->line_data.force_raw) {\n      send_nvt_command", 1)
+open(p, "w").write(s)
+
+# bridge.c: skip auto-detection for raw hosts
+p = "src/bridge.c"
+s = open(p).read()
+old = "    if ((data[0] == 0xff) || (data[0] == 0x1a)) {"
+assert old in s, "bridge.c detection changed"
+s = s.replace(old, "    if (!cfg->line_data.force_raw && ((data[0] == 0xff) || (data[0] == 0x1a))) {", 1)
+open(p, "w").write(s)
+EOF
+
 echo -n "Installing prerequisites..."
 if sudo apt-get update --allow-releaseinfo-change > /dev/null 2>&1 \
-    && sudo apt-get install -y iptables ppp inetutils-telnet xinetd telnetd-ssl > /dev/null 2>&1 \
+    && sudo apt-get install -y iptables ppp inetutils-telnet xinetd telnetd-ssl python3 > /dev/null 2>&1 \
     && cd /tmp \
-    && wget https://github.com/FozzTexx/tcpser/archive/refs/heads/master.zip > /dev/null 2>&1 \
-    && unzip -o master.zip > /dev/null 2>&1 \
+    && rm -rf tcpser-master master.zip \
+    && wget -q -O master.zip https://github.com/FozzTexx/tcpser/archive/refs/heads/master.zip \
+    && unzip -q master.zip \
     && cd tcpser-master \
+    && python3 /tmp/tcpser-rawhost-patch.py "$RAW_HOST" \
     && make > /dev/null 2>&1 \
+    && { sudo systemctl stop tcpser > /dev/null 2>&1 || true; } \
     && sudo cp -p tcpser /usr/local/bin > /dev/null 2>&1; then
     echo "Done"
 else
