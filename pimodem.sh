@@ -103,7 +103,8 @@ EOF
 then
     # NOTE: heredocs can't be placed mid-chain before an "&&" on the next line,
     # so the sysctl file is written with echo | tee instead.
-    if sudo iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE > /dev/null 2>&1 \
+    if { sudo iptables -t nat -C POSTROUTING -o wlan0 -j MASQUERADE > /dev/null 2>&1 \
+            || sudo iptables -t nat -A POSTROUTING -o wlan0 -j MASQUERADE > /dev/null 2>&1; } \
         && sudo apt-get install -y iptables-persistent > /dev/null 2>&1 \
         && echo "net.ipv4.ip_forward = 1" | sudo tee /etc/sysctl.d/99-pimodem-ip-forward.conf > /dev/null \
         && sudo sysctl --system > /dev/null 2>&1; then
@@ -209,7 +210,7 @@ else
 fi
 
 echo -n "Creating ppp user..."
-if sudo useradd -m ppp > /dev/null 2>&1 \
+if { id ppp > /dev/null 2>&1 || sudo useradd -m ppp > /dev/null 2>&1; } \
     && sudo usermod -aG dip ppp > /dev/null 2>&1 \
     && sudo usermod -s /usr/sbin/pppd ppp > /dev/null 2>&1 \
     && sudo touch /home/ppp/.hushlogin > /dev/null 2>&1 \
@@ -221,8 +222,8 @@ else
 fi
 
 echo -n "Creating pppd configuration..."
-sudo mv /etc/ppp/options /etc/ppp/options.orig > /dev/null 2>&1
-sudo mv /etc/ppp/pap-secrets /etc/ppp/pap-secrets.orig > /dev/null 2>&1
+[ -e /etc/ppp/options.orig ] || sudo mv /etc/ppp/options /etc/ppp/options.orig > /dev/null 2>&1
+[ -e /etc/ppp/pap-secrets.orig ] || sudo mv /etc/ppp/pap-secrets /etc/ppp/pap-secrets.orig > /dev/null 2>&1
 
 sudo tee /etc/ppp/options > /dev/null << 'EOF'
 # We will be doing PPP over Telnet - disable serial control.
